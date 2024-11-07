@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Starting the example in the empty world scenario -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch"> 
+    <arg name="paused" value="false"/>
+  </include>
+
+  <!-- defining the namespaces of the two robots -->
+  <arg name="ns1" value="robot1"/>
+  <arg name="ns2" value="robot2"/>
+
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="$(arg ns1)/robot_description" 
+	 command="$(find xacro)/xacro --inorder $(find bridge_example)/urdf/robot2.xacro" />
+
+  <param name="$(arg ns2)/robot_description" 
+	 command="$(find xacro)/xacro --inorder $(find bridge_example)/urdf/robot2.xacro" />
+
+
+  <!-- launching the spawner and the controller for robot1 -->
+  <group ns="$(arg ns1)">
+  <param name="tf_prefix" value="robot1_tf" />
+  	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model $(arg ns1) -param robot_description -x 0 -y 0 -z 0.05"/>
+	<node name="example_ball" pkg="bridge_example" type="robot_following.py" />-->
+  </group>
+
+  <!-- launching the spawner and the controller for robot2 -->
+  <group ns="$(arg ns2)">
+  <param name="tf_prefix" value="robot2_tf" />
+   	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model $(arg ns2) -param robot_description -x 2 -y 2 -z 0.05"/>
+        <node name="controller" pkg="bridge_example" type="random_robot" />
+  </group> 
+
+</launch>

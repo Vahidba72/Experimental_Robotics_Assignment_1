@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="model" default="$(find robot_urdf)/urdf/my_robot4.xacro" />
+
+  <!-- We resume the logic in empty_world.launch -->
+   <include file="$(find gazebo_ros)/launch/empty_world.launch"> 
+    <arg name="paused" value="true"/>
+  </include>
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="robot_description" 
+	 command="$(find xacro)/xacro --inorder $(arg model)" />
+	 
+  <!-- Start Rviz -->  
+   <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" ></node>
+   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" /> 
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find urdf_tutorial)/urdf.rviz" />
+
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+   <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model robot1 -param robot_description -z 0.05"/>
+	
+   <rosparam file="$(find robot_urdf)/config/my_robot4_config.yaml" command="load" ns="/my_robot4" />
+
+   <node name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="--namespace=/my_robot4
+        joint_state_controller
+        camera_holder_position_controller
+        --shutdown-timeout 3">
+    </node> 
+
+</launch>
