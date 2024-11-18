@@ -26,13 +26,14 @@ from cv_bridge import CvBridge, CvBridgeError
 from std_msgs.msg import Bool, Int32
 from geometry_msgs.msg import Twist , Point 
 from sensor_msgs.msg import CompressedImage , CameraInfo
+from std_msgs.msg import Float64
 
 
-class camera_fix_controller:
+class camera_rotating_controller:
 
 	def __init__(self):
 	
-		rospy.init_node('camera_fix_controller')
+		rospy.init_node('camera_rotating_controller')
 		
 		
 		
@@ -44,13 +45,14 @@ class camera_fix_controller:
 		self.Info_gathering_mode = True  # The flag to control when to stop the data gathering 
 		self.Reached = False
 		self.Current_marker = 0
+		self.Current_angle = 0.0
 		
 				
 		# Publishers
 		
 		self.image_pub = rospy.Publisher("/output/image_raw/compressed", CompressedImage, queue_size=1)
 		
-		self.velocity_publisher = rospy.Publisher('/cmd_vel' , Twist , queue_size = 1)
+		self.camera_holder_publisher = rospy.Publisher('/my_robot4/camera_holder_position_controller/command' , Float64 , queue_size = 1)
 		
 		
 		# Subscribers
@@ -100,7 +102,7 @@ class camera_fix_controller:
 		image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)  # OpenCV >= 3.0:
 	
 		
-		vel = Twist()
+		vel = Float64()
 		
 		
 		if self.Info_gathering_mode:
@@ -108,8 +110,8 @@ class camera_fix_controller:
 			if len(self.marker_id_list) < 7: 
 				
 				
-				vel.linear.x = 0 
-				vel.angular.z = 0.7
+				self.Current_angle += 0.07 
+				vel.data = self.Current_angle
 
 				if self.Id_number and self.Id_number not in self.marker_id_list:
 
@@ -137,10 +139,11 @@ class camera_fix_controller:
 				
 				
 				
-				if abs(self.CameraCenter.x - target_x) < 10 and self.Id_number == self.Current_marker:
+				if abs(self.CameraCenter.x - target_x) < 20 and self.Id_number == self.Current_marker:
 				
 					self.Reached = True
-					vel.angular.z = 0
+					self.Current_angle += 0 
+					vel.data = self.Current_angle 
 					rospy.loginfo(f"Reached marker {self.Current_marker}")
 					
 					# Draw a circle around the marker position on the image
@@ -159,29 +162,34 @@ class camera_fix_controller:
 				
 					self.marker_id_list.pop(0)
 					self.Reached = False
-					vel.angular.z = 0
+					self.Current_angle += 0
+					vel.data = self.Current_angle
 					
 					
 				elif self.CameraCenter.x > target_x and self.Id_number == self.Current_marker:
 					
-					vel.angular.z = 0.3
+					self.Current_angle += 0.01
+					vel.data = self.Current_angle 
 					print('turn left')
 					
 				elif self.CameraCenter.x < target_x  and self.Id_number == self.Current_marker:
 				
-					vel.angular.z = -0.3
+					self.Current_angle -= 0.01
+					vel.data = self.Current_angle 
 					print('turn right')
 				else: 
-					vel.angular.z = 0.5
+					self.Current_angle += 0.07
+					vel.data = self.Current_angle
 					print('keep up')
 				
 			else:
 			
-				vel.angular.z = 0
+				self.Current_angle += 0
+				vel.data = self.Current_angle
 				print("all markers found")	
 					
 				
-		self.velocity_publisher.publish(vel)    
+		self.camera_holder_publisher.publish(vel)    
 		
 		
 				
@@ -190,7 +198,7 @@ class camera_fix_controller:
 
 def main():
 
-	camera_fix_controller()
+	camera_rotating_controller()
 	rospy.spin()
 	
 	
@@ -198,3 +206,4 @@ if __name__ == '__main__':
 
 	main()		
 		
+
