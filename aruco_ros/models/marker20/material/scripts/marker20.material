@@ -1,0 +1,14 @@
+material Aruco/marker20
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture marker20.png
+			}
+		}
+	}
+}
+
