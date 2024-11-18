@@ -1,0 +1,14 @@
+material Aruco/marker37
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture marker37.png
+			}
+		}
+	}
+}
+

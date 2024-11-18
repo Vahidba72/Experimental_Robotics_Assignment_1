@@ -1,0 +1,14 @@
+material Aruco/marker38
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture marker38.png
+			}
+		}
+	}
+}
+

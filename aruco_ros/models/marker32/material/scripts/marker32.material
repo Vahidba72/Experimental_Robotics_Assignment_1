@@ -1,0 +1,14 @@
+material Aruco/marker32
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture marker32.png
+			}
+		}
+	}
+}
+
