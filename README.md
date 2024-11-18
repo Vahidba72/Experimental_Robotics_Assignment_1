@@ -8,12 +8,11 @@ A ROS package for marker detection, tracking, and alignment using a robot's came
 
 1. [Features](#features)  
 2. [Dependencies](#dependencies)  
-3. [Installation](#installation)  
-4. [Usage](#usage)  
-5. [Topics](#topics)  
-6. [Code Overview](#code-overview)  
-7. [Author](#author)  
-8. [License](#license)  
+3. [Usage](#usage)  
+4. [Topics](#topics)  
+5. [Code Overview](#code-overview)  
+6. [Author](#author)  
+
 
 ---
 
@@ -45,26 +44,11 @@ Ensure the following software and libraries are installed:
 ```bash
 pip install numpy scipy imutils opencv-python
 ```
-## Installation
-
-1. Clone this repository and navigate to the package directory:
-```bash
-git clone <repository_url>
-cd <repository_name>
-```
-2. Build your ROS workspace:
-```bash
-catkin_make
-```
-3. Source your ROS workspace:
-```bash
-source devel/setup.bash
-```
 ### Usage
 
 1. Run the camera_fix_controller node:
 ```bash
-rosrun <your_package_name> camera_fix_controller.py
+rosrun robot_urdf camera_fix_controller.py
 ```
 2. Ensure the following topics are active and functioning:
 
