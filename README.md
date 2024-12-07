@@ -50,19 +50,28 @@ pip install numpy scipy imutils opencv-python
 ```bash
 git clone https://github.com/CarmineD8/aruco_ros
 ```
-2. 
-2. Run the camera_fix_controller node:
+2. clone the robot_urdf folder into your workspace
+3. form the aruco_ros folder in this repository substitute the .cpp file in src folder in the src folder of the aruco_ros repository you cloned before
+4. build your workspace:
 ```bash
-rosrun robot_urdf camera_fix_controller.py
+catkin_make 
 ```
-2. Ensure the following topics are active and functioning:
+5. Run the camera_fix_controller node:
+```bash
+roslaunch robot_urdf assignment1_2.launch
+```
+6. Ensure the following topics are active and functioning:
 
 - `/robot/camera1/image_raw/compressed`
 - `/robot/camera1/camera_info`
 - `/marker/id_number`
 - `/marker/center_loc`
-3. The robot will rotate to gather marker information and align its camera with the markers one by one.
-
+7. The robot will rotate to gather marker information and align its camera with the markers one by one.
+8. for the case that you want only the camera link to rotate and the car stays fixed. run the following launch file:
+```bash
+roslaunch robot_urdf assignment1_3.launch
+```
+  
 ### Topics
 #### Published Topics
 `/output/image_raw/compressed`
