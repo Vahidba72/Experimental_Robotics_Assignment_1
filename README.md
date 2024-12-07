@@ -46,7 +46,12 @@ pip install numpy scipy imutils opencv-python
 ```
 ### Usage
 
-1. Run the camera_fix_controller node:
+1. At first clone the following Aruco Ros Repository in your workspace:
+```bash
+git clone https://github.com/CarmineD8/aruco_ros
+```
+2. 
+2. Run the camera_fix_controller node:
 ```bash
 rosrun robot_urdf camera_fix_controller.py
 ```
