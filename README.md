@@ -1,4 +1,4 @@
-# Camera Fix Controller
+# Marker Tracker Project
 
 A ROS package for marker detection, tracking, and alignment using a robot's camera. The markers are placed on a circle around the robot. This package enables the robot to gather marker information, navigate to them, and visually highlight detected markers on the camera feed. Two different codes are written. In the first python code `camera_fix_controller.py` the whole chassis of the car rotates and detects the markers which are placed around it. In the second code `camera_rotating_controller.py` only the link which ccarries the camera rotates and the car chassis stays still. 
 
