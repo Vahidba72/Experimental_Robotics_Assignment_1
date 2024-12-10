@@ -130,9 +130,3 @@ Implements:
 `main()`
 
 - Initializes the ROS node and starts the camera_fix_controller.
-
-### Author
-
-**Vahid Bagherian**  
-Email: [v.bagherianno@gmail.com](mailto:v.bagherianno@gmail.com)
-
